@@ -1,20 +1,35 @@
 package StepDefs;
 
 import base.BaseUtil;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.*;
+import utilities.PropertyReader;
+
+import java.io.IOException;
+import java.time.Duration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
 public class SwagLabsStpDef extends BaseUtil {
     private BaseUtil base;
+    private  SwagLabHomePage swagLabHomePage;
+    SwagLabProductsPage swagLabProductsPage;
+    InventoryItemsPage inventoryItemsPage;
+    YourCartPage yourCartPage;
     public SwagLabsStpDef(BaseUtil base){
         this.base = base;
     }
 
+    public void initPages(){
+        swagLabHomePage = new SwagLabHomePage(base.driver);
+        swagLabProductsPage = new SwagLabProductsPage(base.driver);
+        inventoryItemsPage = new InventoryItemsPage(base.driver);
+        yourCartPage = new YourCartPage(base.driver);
+    }
 
     @Given("I am on the swag lab home page {string}")
     public void i_am_on_the_swag_lab_home_page(String url) {
@@ -22,10 +37,17 @@ public class SwagLabsStpDef extends BaseUtil {
 
         base.driver.get(url);
     }
+
+    @Given("I am on the swag lab home page")
+    public void iAmOnTheSwagLabHomePage() throws IOException {
+        base.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+        PropertyReader propertyReader = new PropertyReader();
+        base.driver.get(propertyReader.getSwagLabUrl());
+    }
     @When("I enter valid username and valid password")
     public void i_enter_valid_username_and_valid_password() {
         // Write code here that turns the phrase above into concrete actions
-        SwagLabHomePage swagLabHomePage = new SwagLabHomePage(base.driver);
+        initPages();
         swagLabHomePage.enterUserName("standard_user");
         swagLabHomePage.enterPassword("secret_sauce");
 
@@ -33,39 +55,43 @@ public class SwagLabsStpDef extends BaseUtil {
     @When("I click on Login button")
     public void i_click_on_login_button() {
         // Write code here that turns the phrase above into concrete actions
-        SwagLabHomePage swagLabHomePage = new SwagLabHomePage(base.driver);
+//        SwagLabHomePage swagLabHomePage = new SwagLabHomePage(base.driver);
         swagLabHomePage.clickOnLoginButton();
     }
     @When("I click on the first item on the Products page")
     public void i_click_on_the_first_item_on_the_products_page() {
         // Write code here that turns the phrase above into concrete actions
-        SwagLabProductsPage swagLabProductsPage = new SwagLabProductsPage(base.driver);
+
         swagLabProductsPage.clickOntheFirstProduct();
     }
     @When("I click on Add to cart button")
     public void i_click_on_add_to_cart_button() {
         // Write code here that turns the phrase above into concrete actions
-        InventoryItemsPage inventoryItemsPage = new InventoryItemsPage(base.driver);
+
         inventoryItemsPage.clickOnAddToCart();
     }
     @When("I click on Shopping cart")
     public void i_click_on_shopping_cart() {
-        InventoryItemsPage inventoryItemsPage = new InventoryItemsPage(base.driver);
+
         inventoryItemsPage.clickOnShoppingCart();
     }
     @When("I click on Checkout")
     public void i_click_on_checkout() {
         // Write code here that turns the phrase above into concrete actions
-        YourCartPage yourCartPage = new YourCartPage(base.driver);
+
         yourCartPage.clickOnCheckoutButton();
     }
     @When("I complete all the required fields")
-    public void i_complete_all_the_required_fields() {
+    public void i_complete_all_the_required_fields() throws IOException {
         // Write code here that turns the phrase above into concrete actions
         CheckoutPage checkoutPage = new CheckoutPage(base.driver);
-        checkoutPage.enterFirstname("Lateef");
-        checkoutPage.enterLastname("Adedokun");
-        checkoutPage.enterPostCode("Da2 3jh");
+//        checkoutPage.enterFirstname("Lateef");
+//        checkoutPage.enterLastname("Adedokun");
+//        checkoutPage.enterPostCode("Da2 3jh");
+        PropertyReader propertyReader = new PropertyReader();
+        checkoutPage.enterFirstname(propertyReader.getFirstName());
+        checkoutPage.enterLastname(propertyReader.getLastname());
+        checkoutPage.enterPostCode(propertyReader.getPostCode());
 
     }
     @When("I click on Continue button")
@@ -87,5 +113,35 @@ public class SwagLabsStpDef extends BaseUtil {
        String actualResult =checkoutCompletePage.getMessage();
        assertThat(actualResult.equalsIgnoreCase(msg), is(true));
     }
+
+    @And("I enter details for only firstname and lastname")
+    public void iEnterDetailsForOnlyFirstnameAndLastname() {
+        
+    }
+
+    @Then("error msg {string} is displayed")
+    public void errorMsgIsDisplayed(String msg) {
+        if (msg=="Error: Postal Code is required"){
+
+        }
+        else if (msg=="Error: First Name is required"){
+
+        }
+        else if(msg == "Error: Last Name is required"){
+
+        }
+
+
+    }
+
+    @And("I enter details for only lastname and postcode")
+    public void iEnterDetailsForOnlyLastnameAndPostcode() {
+
+    }
+
+    @And("I enter details for only firstname and postcode")
+    public void iEnterDetailsForOnlyFirstnameAndPostcode() {
+    }
+
 
 }
