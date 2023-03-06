@@ -1,6 +1,8 @@
+@Regression
 Feature: SwagLabs
   Purchasing items in swaglab
 
+  @smoke
   @Swag
   Scenario: 1. Happy path to purchase an item
 #    Given I am on the swag lab home page "https://www.saucedemo.com/"
@@ -42,6 +44,7 @@ Feature: SwagLabs
     Then error msg "Error: First Name is required" is displayed
 #    Then error msg "Error: First Name is required" is displayed under firstname field
 
+  @smoke
   Scenario:4 Error msg should be displayed if Lastname field is not populated on the checkout page
     Given I am on the swag lab home page "https://www.saucedemo.com/"
     When I enter valid username and valid password

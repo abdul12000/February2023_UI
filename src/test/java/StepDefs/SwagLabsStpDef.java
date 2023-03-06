@@ -5,6 +5,9 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import pages.*;
 import utilities.PropertyReader;
 
@@ -55,8 +58,14 @@ public class SwagLabsStpDef extends BaseUtil {
     @When("I click on Login button")
     public void i_click_on_login_button() {
         // Write code here that turns the phrase above into concrete actions
-//        SwagLabHomePage swagLabHomePage = new SwagLabHomePage(base.driver);
+        SwagLabHomePage swagLabHomePage = new SwagLabHomePage(base.driver);
         swagLabHomePage.clickOnLoginButton();
+
+//        WebElement pWord = driver.findElement(By.cssSelector("input[id='password']"));
+//        pWord.sendKeys(Keys.TAB);
+//
+//        WebElement loginButton = driver.findElement(By.cssSelector("input[id='login-button']"));
+//        loginButton.sendKeys(Keys.ENTER);
     }
     @When("I click on the first item on the Products page")
     public void i_click_on_the_first_item_on_the_products_page() {
